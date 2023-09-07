@@ -7,4 +7,4 @@ actually not
 |  
 |  
 |  
-That just is a dream
+That is just a dream
