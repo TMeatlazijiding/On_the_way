@@ -1,4 +1,5 @@
-![image](https://github.com/TMeatlazijiding/On_the_way/assets/62745028/1d06a668-fc43-4a24-b1c1-797f9e50efcc)# git fetch但是不merge会有什么后果
+![image](https://github.com/TMeatlazijiding/On_the_way/assets/62745028/1d06a668-fc43-4a24-b1c1-797f9e50efcc)
+# git fetch但是不merge会有什么后果
 ~~~
 git fetch 是将远程仓库的最新内容拉到本地，但并不会自动合并到本地的分支上。
 如果你不合并，你的本地分支就会落后于远程分支，可能会产生冲突。
