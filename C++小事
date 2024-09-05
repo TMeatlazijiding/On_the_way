@@ -1,1 +1,71 @@
+1. 使用引用作为函数入参有哪些性能优势
 
+首先，引用作为别名，直接指向一个已有的对象，传递一个地址给函数，相比于值传递需要重新拷贝一个
+副本来传给函数，一个地址占用的空间更小。
+其次，传递的参数需要入栈来存储，相比值传递需要将整个参数对象压入栈里，引用传递只需要压入一个
+地址，消耗空间更小。（大小等同一个指针小大）
+第三，支持多态，虚函数调用时，可以基于多态实现正确调用，指针需要解引用和释放内存，值传递不可
+以表现多态，因为会发生对象切割，派生类的属性和虚函数信息会丢失，从而不能表现出多态性。
+
+2.关于指针调用函数
+
+指针实际上是一个地址，通过解引用可以访问到该地址的对象。但是在函数调用中经常没有解引用这一步，
+而是直接用->调用函数，实际上->这个符号表示解引用和访问成员的组合操作，如果不用->，看下面的例
+子：
+void printByPointer(Base* obj) {  // 使用指针实现多态
+    (*obj).print();  // 显式解引用后调用虚函数
+    // 等价于：obj->print();  // 隐式解引用
+}
+
+3.对象切割的本质
+
+在 C++ 中，派生类继承基类的成员变量和成员函数，因此派生类对象不仅包含基类的部分，还包含派生类
+自己扩展的部分。当通过值传递或赋值将派生类对象传递给基类对象时，基类对象只能存储基类的部分，派
+生类的扩展部分被丢弃。这就是对象切割的本质。
+#include <iostream>
+
+class Base {
+public:
+    virtual void print() const {
+        std::cout << "Base class\n";
+    }
+};
+
+class Derived : public Base {
+public:
+    void print() const override {
+        std::cout << "Derived class\n";
+    }
+    
+    void additionalFunction() const {
+        std::cout << "Derived class additional function\n";
+    }
+};
+
+void byValue(Base obj) {  // 值传递
+    obj.print();  // 基类的 print() 被调用
+}
+
+int main() {
+    Derived derivedObj;
+    
+    byValue(derivedObj);  // 对象切割发生
+
+    return 0;
+}
+当 byValue() 被调用时，虽然传入的是一个 Derived 对象，但由于参数是按值传递的 Base 类型，Derived 对象
+被“切割”成了 Base 对象。
+byValue() 内部调用 obj.print()，由于 obj 被切割成了 Base 类型，只能调用 Base 类的 print()，输出的是 
+"Base class"，而不是派生类 Derived 中重写的 print()。
+
+4. 为什么发生对象切割？
+值传递：
+
+当派生类对象以值传递的方式传递给函数时，C++ 会创建该对象的一个副本。由于函数参数的类型是基类，这个副本
+实际上是一个基类对象，而不是派生类对象。因此，派生类的扩展部分（额外的成员变量、成员函数）不会被复制到
+这个基类对象中。
+
+赋值：
+
+类似的，假设有基类对象 Base 和派生类对象 Derived，当我们执行 Base base = derivedObj; 这样的赋值操作时，
+派生类的扩展部分也会被丢弃，导致对象切割。
