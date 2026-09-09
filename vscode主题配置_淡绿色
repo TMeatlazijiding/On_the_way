@@ -1,0 +1,23 @@
+按下 Ctrl + Shift + P 打开命令面板，输入并选择 Preferences: Open User Settings (JSON)
+vscode setting.json
+{
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.formatOnType": true,
+    "hediet.vscode-drawio.resizeImages": null,
+    "workbench.colorTheme": "Default High Contrast Light",
+    "workbench.colorCustomizations": {
+        "editor.background": "#e8f5e9",
+        "editor.foreground": "#1b5e20",
+        "editorLineNumber.foreground": "#81c784",
+        "editor.lineHighlightBackground": "#c8e6c9",
+        "editor.selectionBackground": "#a5d6a7",
+        "editorCursor.foreground": "#2e7d32",
+        "tab.activeBackground": "#c8e6c9",
+        "sideBar.background": "#f1f8e9",
+        "titleBar.activeBackground": "#e8f5e9",
+        "statusBar.background": "#66bb6a",
+        "statusBar.foreground": "#ffffff",
+        "panel.background": "#f1f8e9",
+        "terminal.background": "#e8f5e9"
+    }
+}
